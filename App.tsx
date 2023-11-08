@@ -8,6 +8,11 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Image, FlatList, StyleSheet } from 'react-native';
 
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './screens/HomeScreen';
+import DetailScreen from './screens/DetailScreen';
+
 const data = [
   { id: 1, name: 'Produk A', image: 'https://example.com/image1.jpg' },
   { id: 2, name: 'Produk B', image: 'https://example.com/image2.jpg' },
@@ -15,6 +20,7 @@ const data = [
   // Tambahkan data lainnya
 ];
 
+const Stack = createStackNavigator();
 
 function App(): JSX.Element {
   const [searchText, setSearchText] = useState('');
@@ -26,26 +32,12 @@ function App(): JSX.Element {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Aplikasi Pencarian</Text>
-      <TextInput
-        placeholder="Cari produk"
-        value={searchText}
-        onChangeText={text => setSearchText(text)}
-        style={styles.input}
-      />
-      <Button title="Cari" onPress={handleSearch} />
-      <FlatList
-        data={searchResults}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Image source={{ uri: item.image }} style={styles.image} />
-            <Text>{item.name}</Text>
-          </View>
-        )}
-      />
-    </View>
+    <NavigationContainer>
+    <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Detail" component={DetailScreen} />
+    </Stack.Navigator>
+  </NavigationContainer>
   );
 };
 const styles = StyleSheet.create({
